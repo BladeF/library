@@ -85,7 +85,7 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     ifstream bookData("bookData.txt");
     ifstream tagData("tagData.txt");
     char     bookCont, tagCont;
-    string   tagInput, bookTitle, bookAuthor;
+    string   tagInput, bookTitle, bookAuthor, bookTag;
     Book     temp;
 
     // Preps screen for running
@@ -105,13 +105,19 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     else {
         // If data is present, loads data
         while(!bookData.eof()) {
+            temp.clearTags(); // Resets vector for each pass of the loop
             getline(bookData, bookTitle);
             getline(bookData, bookAuthor);
+            getline(bookData, bookTag);
+
+            while(bookTag.compare(":") != 0) {
+                temp.addTag(bookTag);
+                getline(bookData, bookTag);
+            }
 
             temp.setTitle(bookTitle);
             temp.setAuthor(bookAuthor);
             bookList.push_back(temp);
-            bookData.ignore();
         }
     }
 
@@ -134,9 +140,16 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
 }
 
 void showBooks(list<Book> &bookList) {
+    vector<string> tags;
+
     for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
         cout << i->getTitle() << endl;
         cout << i->getAuthor() << endl;
+
+        tags = i->getTags();
+        for(int v = 0; v != tags.size(); v++) {
+            cout << "\t" << tags[v] << endl;
+        }
     }
 }
 
