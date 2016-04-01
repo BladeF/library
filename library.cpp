@@ -9,28 +9,44 @@
 using namespace std;
 
 //Function Prototypes
-void printMenu ();
-int  getCmd    ();
-void initLoad  (list<Book> &, vector<string> &);
-void showBooks (list<Book> &);
+void printMenu   ();
+int  getCmd      ();
+void initLoad    (list<Book> &, vector<string> &);
+void showBooks   (list<Book> &);
+void clearScreen ();
+void pauseScreen ();
 
 int main(int argc, char** argv) {
 
+    char           cont;
     int            cmd;
     list<Book>     library;
     vector<string> tags;
 
     initLoad(library, tags);
-    printMenu();
-    cmd = getCmd();
 
-    switch(cmd) {
-        case 1:
-             showBooks(library);
-             break;
-    }
+    do {
+        clearScreen();
+        printMenu();
+        cmd = getCmd();
 
-    return EXIT_SUCCESS;
+        switch(cmd) {
+            case 1:
+                 clearScreen();
+                 showBooks(library);
+                 break;
+            case 2:
+            case 3:
+            case 4:
+            case 0:
+                 cout << "Goodbye!" << endl;
+                 return EXIT_SUCCESS;
+        }
+
+        pauseScreen();
+    } while(true);
+
+    return EXIT_FAILURE;
 }
 
 void printMenu() {
@@ -41,9 +57,11 @@ void printMenu() {
     cout << setw(16) << right << "2"               << "    "
          << setw(16) << left  << "Search Books"    << endl;
     cout << setw(16) << right << "3"               << "    "
-         << setw(16) << left  << "Add Book"    << endl;
+         << setw(16) << left  << "Add Book"        << endl;
     cout << setw(16) << right << "4"               << "    "
-         << setw(16) << left  << "Show All Tags"    << endl;
+         << setw(16) << left  << "Show All Tags"   << endl;
+    cout << setw(16) << right << "0"               << "    "
+         << setw(16) << left  << "Quit"            << endl;
 
 }
 
@@ -54,7 +72,7 @@ int getCmd() {
         cout << "\n\nPlease select an option number: ";
         cin  >> cmd;
 
-        if(cmd >= 1 && cmd <= 4)
+        if(cmd >= 0 && cmd <= 4)
             break;
 
         cout << "Invalid choice! Please select between 1 and 4" << endl;
@@ -69,6 +87,9 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     char     bookCont, tagCont;
     string   tagInput, bookTitle, bookAuthor;
     Book     temp;
+
+    // Preps screen for running
+    clearScreen();
 
     // Checks if there is stored data
     if(!bookData) {
@@ -111,9 +132,20 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     }
 
 }
- void showBooks(list<Book> &bookList) {
+
+void showBooks(list<Book> &bookList) {
     for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
         cout << i->getTitle() << endl;
         cout << i->getAuthor() << endl;
     }
+}
+
+void clearScreen() {
+    system("clear");
+}
+
+void pauseScreen() {
+    cout << "Press Enter to continue..." << endl;
+    cin.ignore();
+    cin.get();
 }
