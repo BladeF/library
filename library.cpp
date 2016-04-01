@@ -15,6 +15,7 @@ void initLoad    (list<Book> &, vector<string> &);
 void showBooks   (list<Book> &);
 void clearScreen ();
 void pauseScreen ();
+void showTags    (vector<string> &);
 
 int main(int argc, char** argv) {
 
@@ -38,6 +39,9 @@ int main(int argc, char** argv) {
             case 2:
             case 3:
             case 4:
+                 clearScreen();
+                 showTags(tags);
+                 break;
             case 0:
                  cout << "Goodbye!" << endl;
                  return EXIT_SUCCESS;
@@ -158,7 +162,13 @@ void clearScreen() {
 }
 
 void pauseScreen() {
-    cout << "Press Enter to continue..." << endl;
+    cout << "Press Enter to continue...";
     cin.ignore();
     cin.get();
+}
+
+void showTags(vector<string> &tagVector) {
+    for(int i = 0; i < tagVector.size(); i++) {
+        cout << tagVector[i] << endl;
+    }
 }
