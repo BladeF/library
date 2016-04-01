@@ -12,6 +12,7 @@ using namespace std;
 void printMenu ();
 int  getCmd    ();
 void initLoad  (list<Book> &, vector<string> &);
+void showBooks (list<Book> &);
 
 int main(int argc, char** argv) {
 
@@ -22,6 +23,12 @@ int main(int argc, char** argv) {
     initLoad(library, tags);
     printMenu();
     cmd = getCmd();
+
+    switch(cmd) {
+        case 1:
+             showBooks(library);
+             break;
+    }
 
     return EXIT_SUCCESS;
 }
@@ -77,12 +84,13 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     else {
         // If data is present, loads data
         while(!bookData.eof()) {
-            bookData >> bookTitle;
-            bookData >> bookAuthor;
+            getline(bookData, bookTitle);
+            getline(bookData, bookAuthor);
 
             temp.setTitle(bookTitle);
             temp.setAuthor(bookAuthor);
             bookList.push_back(temp);
+            bookData.ignore();
         }
     }
 
@@ -102,4 +110,10 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
         }
     }
 
+}
+ void showBooks(list<Book> &bookList) {
+    for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
+        cout << i->getTitle() << endl;
+        cout << i->getAuthor() << endl;
+    }
 }
