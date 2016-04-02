@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <limits>
 #include <list>
 #include <vector>
 #include <cstdlib>
@@ -16,6 +17,7 @@ void showBooks   (list<Book> &);
 void clearScreen ();
 void pauseScreen ();
 void showTags    (vector<string> &);
+void addBook     (list<Book> &);
 
 int main(int argc, char** argv) {
 
@@ -38,6 +40,9 @@ int main(int argc, char** argv) {
                  break;
             case 2:
             case 3:
+                 clearScreen();
+                 addBook(library);
+                 break;
             case 4:
                  clearScreen();
                  showTags(tags);
@@ -107,7 +112,6 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
         }
     }
     else {
-int counter = 1;
         // If data is present, loads data
         while(!bookData.eof()) {
             temp.clearTags(); // Resets vector for each pass of the loop
@@ -171,7 +175,7 @@ void clearScreen() {
 
 void pauseScreen() {
     cout << "Press Enter to continue...";
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.get();
 }
 
@@ -180,3 +184,19 @@ void showTags(vector<string> &tagVector) {
         cout << tagVector[i] << endl;
     }
 }
+
+void addBook(list<Book> &bookList) {
+    Book   temp;
+    string title, author;
+
+    cout << "Enter title in quote (\"Title\"): ";
+    cin.ignore();
+    getline(cin, title);
+    cout << "Enter author: ";
+    getline(cin, author);
+    cin.putback('\n'); // Pause function relies on newline
+
+    temp.setTitle(title);
+    temp.setAuthor(author);
+    bookList.push_back(temp);
+};
