@@ -9,11 +9,11 @@ else
 fi
 
 chmod 755 src/* lib/*
-chmod 755 data lib src scripts
+chmod 755 data  src scripts
 
 g++ -o library src/library.cpp src/Book.cpp
 
-chmod 444 library
+chmod 444 ./library
 
 mv init.sh scripts
 chmod 555 *.sh scripts/*.sh

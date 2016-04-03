@@ -1,5 +1,5 @@
 #!/bin/bash
 
-library
+./library
 
 scripts/quit.sh

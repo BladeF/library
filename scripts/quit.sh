@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../data
+cd data
 
 rm bookData.txt
 rm tagData.txt
