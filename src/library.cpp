@@ -190,6 +190,9 @@ void pauseScreen() {
 }
 
 void showTags(vector<string> &tagVector) {
+    cout << "Tags in Library" << endl
+         << "----------------" << endl;
+
     for(int i = 0; i < tagVector.size(); i++) {
         cout << tagVector[i] << endl;
     }
