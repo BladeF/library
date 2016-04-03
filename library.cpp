@@ -6,7 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <cctype>
-#include "Book.h"
+#include "lib/Book.h"
 using namespace std;
 
 //Function Prototypes
@@ -101,8 +101,8 @@ int getCmd() {
 }
 
 void initLoad(list<Book> &bookList, vector<string> &tagVector) {
-    ifstream bookData("bookData.txt");
-    ifstream tagData("tagData.txt");
+    ifstream bookData("data/bookData.txt");
+    ifstream tagData ("data/tagData.txt");
     char     bookCont, tagCont;
     string   tagInput, bookTitle, bookAuthor, bookTag;
     Book     temp;
@@ -267,8 +267,8 @@ void deleteBook(list<Book> &bookList) {
 }
 
 void exitLib(list<Book> &bookList, vector<string> &tagVector) {
-    ofstream       bookData("bookOutput.txt"),
-                   tagData("tagOutput.txt");
+    ofstream       bookData("data/bookOutput.txt"),
+                   tagData ("data/tagOutput.txt");
     vector<string> tags;
 
     for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {

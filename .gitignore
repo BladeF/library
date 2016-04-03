@@ -27,5 +27,6 @@
 *.out
 *.app
 
-# Data Files
+# Data Directory and Files
+data/
 *.txt
