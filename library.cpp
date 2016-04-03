@@ -196,8 +196,9 @@ void showTags(vector<string> &tagVector) {
 }
 
 void addBook(list<Book> &bookList, vector<string> &tagVector) {
-    Book   temp;
+    bool   found = false;
     string title, author, tag = "";
+    Book   temp;
 
     cout << "Enter title in quote (\"Title\"): ";
     cin.ignore();
@@ -208,10 +209,11 @@ void addBook(list<Book> &bookList, vector<string> &tagVector) {
     for(int k = 0; k < tagVector.size(); k++) {
         cout << "\t" << tagVector[k] << endl;
     }
-    cout << "Enter single tag, then press enter. Enter next tag or Q to finish:\n";
 
     // Loop for processing multiple tags
     while(true) {
+        cout << "Enter tag, then press enter (Q to finish): ";
+
         getline(cin, tag);
         for(int i = 0; i < tag.length(); i++) {
             tag[i] = tolower(tag[i]);
@@ -220,8 +222,17 @@ void addBook(list<Book> &bookList, vector<string> &tagVector) {
         if(tag.compare("q") == 0)
             break;
 
+        for(int k = 0; k < tagVector.size(); k++) {
+            if(tagVector[k].compare(tag) == 0)
+                found = true;
+        }
+
         temp.addTag(tag);
-        tagVector.push_back(tag);
+
+        if(!found)
+            tagVector.push_back(tag);
+
+        found = false;
     }
 
     cin.putback('\n'); // Pause function relies on newline
