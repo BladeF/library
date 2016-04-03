@@ -18,6 +18,7 @@ void clearScreen ();
 void pauseScreen ();
 void showTags    (vector<string> &);
 void addBook     (list<Book> &, vector<string> &);
+void deleteBook  (list<Book> &);
 
 int main(int argc, char** argv) {
 
@@ -44,6 +45,9 @@ int main(int argc, char** argv) {
                  addBook(library, tags);
                  break;
             case 4:
+                 deleteBook(library);
+                 break;
+            case 5:
                  clearScreen();
                  showTags(tags);
                  break;
@@ -68,6 +72,8 @@ void printMenu() {
     cout << setw(16) << right << "3"               << "    "
          << setw(16) << left  << "Add Book"        << endl;
     cout << setw(16) << right << "4"               << "    "
+         << setw(16) << left  << "Delete Book"     << endl;
+    cout << setw(16) << right << "5"               << "    "
          << setw(16) << left  << "Show All Tags"   << endl;
     cout << setw(16) << right << "0"               << "    "
          << setw(16) << left  << "Quit"            << endl;
@@ -81,7 +87,7 @@ int getCmd() {
         cout << "\n\nPlease select an option number: ";
         cin  >> cmd;
 
-        if(cmd >= 0 && cmd <= 4)
+        if(cmd >= 0 && cmd <= 5)
             break;
 
         cout << "Invalid choice! Please select between 1 and 4" << endl;
@@ -220,3 +226,38 @@ void addBook(list<Book> &bookList, vector<string> &tagVector) {
     temp.setAuthor(author);
     bookList.push_back(temp);
 };
+
+void deleteBook(list<Book> &bookList) {
+    int                   counter = 1,
+                          input;
+    char                  confirm;
+    list<Book>::iterator del     = bookList.begin();
+
+    for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
+        cout << counter      << endl
+             << "\tTitle:  " << i->getTitle()  << endl
+             << "\tAuthor: " << i->getAuthor() << endl
+             << "\t-----"    << endl;
+
+        counter++;
+    }
+
+    cout << "Enter the number of the book to delete: ";
+    cin  >> input;
+
+    advance(del, (input - 1)); // Zero based, so need to subtract 1 to reach true node
+
+    cout << endl
+         << "\tTitle:  " << del->getTitle()  << endl
+         << "\tAuthor: " << del->getAuthor() << endl;
+
+    cout << "Delete this book? (Y or N): ";
+    cin  >> confirm;
+
+    if(toupper(confirm) == 'Y') {
+        bookList.erase(del);
+        cout << "Book successfully erased" << endl;
+    }
+    else
+        cout << "Returning to main menu" << endl;
+}
