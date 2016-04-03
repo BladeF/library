@@ -344,6 +344,45 @@ void search(list<Book> &bookList, vector<string> &tagVector) {
 }
 
 void searchByTitle(list<Book> &bookList, vector<string> &tagVector) {
+    bool   found = false;
+    char   cont;
+    size_t pos;
+    string searchInput, bookTitle;
+
+    do {
+        clearScreen();
+        cout << "Enter title to search: ";
+        cin  >> searchInput;
+        cout << endl;
+
+        for(int k = 0; k < searchInput.length(); k++)
+            searchInput[k] = tolower(searchInput[k]);
+
+        for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
+            bookTitle = i->getTitle();
+
+            for(int c = 0; c < bookTitle.length(); c++)
+                bookTitle[c] = tolower(bookTitle[c]);
+
+
+            pos = bookTitle.find(searchInput);
+
+            if(pos != string::npos) {
+                cout << "Title:  " << i->getTitle()  << endl
+                     << "Author: " << i->getAuthor() << endl
+                     << "-----"    << endl;
+
+                found = true;
+            }
+        }// end for
+
+        if(!found)
+            cout << "\nNo results found...\n";
+
+        cout << "\nSearch again? (Y or N): ";
+        cin  >> cont;
+        cont = tolower(cont);
+    } while(cont == 'y');
 
 }
 
