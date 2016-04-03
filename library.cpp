@@ -17,7 +17,7 @@ void showBooks   (list<Book> &);
 void clearScreen ();
 void pauseScreen ();
 void showTags    (vector<string> &);
-void addBook     (list<Book> &);
+void addBook     (list<Book> &, vector<string> &);
 
 int main(int argc, char** argv) {
 
@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
             case 2:
             case 3:
                  clearScreen();
-                 addBook(library);
+                 addBook(library, tags);
                  break;
             case 4:
                  clearScreen();
@@ -185,15 +185,35 @@ void showTags(vector<string> &tagVector) {
     }
 }
 
-void addBook(list<Book> &bookList) {
+void addBook(list<Book> &bookList, vector<string> &tagVector) {
     Book   temp;
-    string title, author;
+    string title, author, tag = "";
 
     cout << "Enter title in quote (\"Title\"): ";
     cin.ignore();
     getline(cin, title);
     cout << "Enter author: ";
     getline(cin, author);
+    cout << "Existing tags:" << endl;
+    for(int k = 0; k < tagVector.size(); k++) {
+        cout << "\t" << tagVector[k] << endl;
+    }
+    cout << "Enter single tag, then press enter. Enter next tag or Q to finish:\n";
+
+    // Loop for processing multiple tags
+    while(true) {
+        getline(cin, tag);
+        for(int i = 0; i < tag.length(); i++) {
+            tag[i] = tolower(tag[i]);
+        }
+
+        if(tag.compare("q") == 0)
+            break;
+
+        temp.addTag(tag);
+        tagVector.push_back(tag);
+    }
+
     cin.putback('\n'); // Pause function relies on newline
 
     temp.setTitle(title);
