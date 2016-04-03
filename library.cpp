@@ -19,6 +19,7 @@ void pauseScreen ();
 void showTags    (vector<string> &);
 void addBook     (list<Book> &, vector<string> &);
 void deleteBook  (list<Book> &);
+void exitLib     (list<Book> &, vector<string> &);
 
 int main(int argc, char** argv) {
 
@@ -45,6 +46,7 @@ int main(int argc, char** argv) {
                  addBook(library, tags);
                  break;
             case 4:
+                 clearScreen();
                  deleteBook(library);
                  break;
             case 5:
@@ -52,6 +54,8 @@ int main(int argc, char** argv) {
                  showTags(tags);
                  break;
             case 0:
+                 clearScreen();
+                 exitLib(library, tags);
                  cout << "Goodbye!" << endl;
                  return EXIT_SUCCESS;
         }
@@ -260,4 +264,29 @@ void deleteBook(list<Book> &bookList) {
     }
     else
         cout << "Returning to main menu" << endl;
+}
+
+void exitLib(list<Book> &bookList, vector<string> &tagVector) {
+    ofstream       bookData("bookOutput.txt"),
+                   tagData("tagOutput.txt");
+    vector<string> tags;
+
+    for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
+        bookData << i->getTitle()  << endl
+                 << i->getAuthor() << endl;
+
+        tags = i->getTags();
+        for(int v = 0; v != tags.size(); v++) {
+            bookData << tags[v] << endl;
+        }
+
+        bookData << ":" << endl;
+    }
+
+    for(int k = 0; k < tagVector.size(); k++) {
+        if((k + 1) != tagVector.size())
+            tagData << tagVector[k] << endl;
+        else
+            tagData << tagVector[k];
+    }
 }
