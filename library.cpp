@@ -142,7 +142,7 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     }
     else {
         while(!tagData.eof()) {
-            tagData >> tagInput;
+            getline(tagData, tagInput);
             tagVector.push_back(tagInput);
         }
     }
