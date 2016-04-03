@@ -10,16 +10,19 @@
 using namespace std;
 
 //Function Prototypes
-void printMenu   ();
-int  getCmd      ();
-void initLoad    (list<Book> &, vector<string> &);
-void showBooks   (list<Book> &);
-void clearScreen ();
-void pauseScreen ();
-void showTags    (vector<string> &);
-void addBook     (list<Book> &, vector<string> &);
-void deleteBook  (list<Book> &);
-void exitLib     (list<Book> &, vector<string> &);
+void printMenu     ();
+int  getCmd        ();
+void initLoad      (list<Book> &, vector<string> &);
+void showBooks     (list<Book> &);
+void clearScreen   ();
+void pauseScreen   ();
+void showTags      (vector<string> &);
+void addBook       (list<Book> &, vector<string> &);
+void deleteBook    (list<Book> &);
+void exitLib       (list<Book> &, vector<string> &);
+void search        (list<Book> &, vector<string> &);
+void searchByTag   (list<Book> &, vector<string> &);
+void searchByTitle (list<Book> &, vector<string> &);
 
 int main(int argc, char** argv) {
 
@@ -41,6 +44,9 @@ int main(int argc, char** argv) {
                  showBooks(library);
                  break;
             case 2:
+                 clearScreen();
+                 search(library, tags);
+                 break;
             case 3:
                  clearScreen();
                  addBook(library, tags);
@@ -303,4 +309,78 @@ void exitLib(list<Book> &bookList, vector<string> &tagVector) {
         else
             tagData << tagVector[k];
     }
+}
+
+void search(list<Book> &bookList, vector<string> &tagVector) {
+    bool   titleFound = false,
+           tagFound   = false;
+    size_t pos;
+    string input;
+
+    cout << "Search by book title or search tags?" << endl
+         << "Enter \"title\" or \"tag\": ";
+    cin  >> input;
+
+    for(int i = 0; i < input.length(); i++)
+        input[i] = tolower(input[i]);
+
+    pos = input.find("title");
+    if(pos != string::npos)
+        titleFound = true;
+    pos = input.find("tag");
+    if(pos != string::npos)
+        tagFound = true;
+
+    if(titleFound) {
+        clearScreen();
+        searchByTitle(bookList, tagVector);
+    }
+    else if(tagFound) {
+        clearScreen();
+        searchByTag(bookList, tagVector);
+    }
+    else
+        cout << "Invalid choice. Returning to main menu." << endl;
+}
+
+void searchByTitle(list<Book> &bookList, vector<string> &tagVector) {
+
+}
+
+void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
+    bool           found = false;
+    char           cont;
+    string         tag;
+    vector<string> tags;
+
+    do {
+        clearScreen();
+        showTags(tagVector);
+        cout << "\nEnter tag to search: ";
+        cin  >> tag;
+        cout << endl;
+
+        for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
+            tags = i->getTags();
+
+            for(int k = 0; k < tags.size(); k++) {
+                if(tag.compare(tags[k]) == 0) {
+                    cout << "Title:  " << i->getTitle()  << endl
+                         << "Author: " << i->getAuthor() << endl
+                         << "-----"    << endl;
+
+                    found = true;
+                }
+            }
+
+            tags.clear();
+        }// end for
+
+        if(!found)
+            cout << "\nNo results found...\n";
+
+        cout << "\nSearch again? (Y or N): ";
+        cin  >> cont;
+        cont = tolower(cont);
+    } while(cont == 'y');
 }
