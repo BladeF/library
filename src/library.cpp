@@ -6,7 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <cctype>
-#include "lib/Book.h"
+#include "Book.h"
 using namespace std;
 
 //Function Prototypes
