@@ -11,7 +11,7 @@ fi
 chmod 755 src/* lib/*
 chmod 755 data lib src scripts
 
-g++ -o library src/library.cpp lib/Book.cpp
+g++ -o library src/library.cpp src/Book.cpp
 
 chmod 444 library
 
