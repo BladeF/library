@@ -13,7 +13,7 @@ chmod 644 data lib src scripts
 
 g++ -o library src/library.cpp lib/Book.cpp
 
-chmod 400 library
+chmod 444 library
 
 mv init.sh scripts
-chmod 700 *.sh scripts/*.sh
+chmod 555 *.sh scripts/*.sh
