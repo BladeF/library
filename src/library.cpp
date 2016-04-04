@@ -95,7 +95,9 @@ int getCmd() {
 
     while(true) {
         cout << "\n\nPlease select an option number: ";
-        cin  >> cmd;
+        cmd cin.get();
+        // Ignores any extra characters entered between cmd and newline
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         if(cmd >= 0 && cmd <= 5)
             break;
