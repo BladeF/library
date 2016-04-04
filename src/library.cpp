@@ -136,6 +136,7 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     if(!bookData) {
         cout << "No previous library data. Continue? (Y or N): ";
         cin  >> bookCont;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         // Gives user a chance to exit and find data is necessary
         if(toupper(bookCont) == 'N') {
@@ -166,6 +167,7 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
     if(!tagData) {
         cout << "No previous tag data. Contiue? (Y or N): ";
         cin  >> tagCont;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         if(toupper(tagCont) == 'N') {
             cout << "Now exiting" << endl;
