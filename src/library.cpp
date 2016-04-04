@@ -353,35 +353,32 @@ void deleteBook(list<Book> &bookList) {
 }
 
 void search(list<Book> &bookList, vector<string> &tagVector) {
-    bool   titleFound = false,
-           tagFound   = false;
-    size_t pos;
-    string input;
+    int input;
 
-    cout << "Search by book title or search tags?" << endl
-         << "Enter \"title\" or \"tag\": ";
+    cout << "Search by book tag, title, or author?" << endl
+         << "\t1\ttag"                                << endl
+         << "\t2\ttitle"                              << endl
+         << "\t3\tauthor"                             << endl
+         << endl << endl
+         << "Enter number of choice: ";
     cin  >> input;
 
-    for(int i = 0; i < input.length(); i++)
-        input[i] = tolower(input[i]);
-
-    pos = input.find("title");
-    if(pos != string::npos)
-        titleFound = true;
-    pos = input.find("tag");
-    if(pos != string::npos)
-        tagFound = true;
-
-    if(titleFound) {
-        clearScreen();
-        searchByTitle(bookList);
+    switch(input) {
+        case 1:
+             clearScreen();
+             searchByTag(bookList, tagVector);
+             break;
+        case 2:
+             clearScreen();
+             searchByTitle(bookList);
+             break;
+        case 3:
+             clearScreen();
+             searchByAuthor(bookList);
+             break;
+        default:
+             cout << "Invalid choice. Returning to main menu." << endl;
     }
-    else if(tagFound) {
-        clearScreen();
-        searchByTag(bookList, tagVector);
-    }
-    else
-        cout << "Invalid choice. Returning to main menu." << endl;
 }
 
 void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
@@ -425,7 +422,6 @@ void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
 void searchByTitle(list<Book> &bookList) {
     bool   found = false;
     char   cont;
-    size_t pos;
     string searchInput, bookTitle;
 
     do {
@@ -444,9 +440,8 @@ void searchByTitle(list<Book> &bookList) {
                 bookTitle[c] = tolower(bookTitle[c]);
 
 
-            pos = bookTitle.find(searchInput);
 
-            if(pos != string::npos) {
+            if(bookTitle.find(searchInput) != string::npos) {
                 cout << "Title:  " << i->getTitle()  << endl
                      << "Author: " << i->getAuthor() << endl
                      << "-----"    << endl;
@@ -463,6 +458,42 @@ void searchByTitle(list<Book> &bookList) {
         cont = tolower(cont);
     } while(cont == 'y');
 
+}
+
+void searchByAuthor(list<Book> &bookList) {
+    bool   found = false;
+    char   cont;
+    string searchInput, bookAuthor;
+
+    do {
+        clearScreen();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Enter author name: ";
+        getline(cin, searchInput);
+        for(int c = 0; c < searchInput.length(); c++)
+            searchInput[c] = tolower(searchInput[c]);
+
+        for(list<Book>::iterator it = bookList.begin(); it != bookList.end(); it++) {
+            bookAuthor = it->getAuthor();
+            for(int i = 0; i < bookAuthor.length(); i++)
+                bookAuthor[i] = tolower(bookAuthor[i]);
+
+            if(bookAuthor.find(searchInput) != string::npos) {
+                cout << "Title:  " << it->getTitle()  << endl
+                     << "Author: " << it->getAuthor() << endl
+                     << "-----"    << endl;
+
+                found = true;
+            }
+        }// end for
+
+        if(!found)
+            cout << "\nNo results found...\n";
+
+        cout << "\nSearch again? (Y or N): ";
+        cin  >> cont;
+        cont = tolower(cont);
+    } while(cont == 'y');
 }
 
 void exitLib(list<Book> &bookList, vector<string> &tagVector) {
