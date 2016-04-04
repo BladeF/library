@@ -214,6 +214,7 @@ void addBook(list<Book> &bookList, vector<string> &tagVector) {
     getline(cin, title);
     cout << "Enter author: ";
     getline(cin, author);
+    cout << "Enter new or existing tag. If no tag desired, just enter Q." << endl;
     cout << "Existing tags:" << endl;
     for(int k = 0; k < tagVector.size(); k++) {
         cout << "\t" << tagVector[k] << endl;
@@ -221,7 +222,7 @@ void addBook(list<Book> &bookList, vector<string> &tagVector) {
 
     // Loop for processing multiple tags
     while(true) {
-        cout << "Enter tag, then press enter (Q to finish): ";
+        cout << "Enter tag or Q to quit: ";
 
         getline(cin, tag);
         for(int i = 0; i < tag.length(); i++) {
@@ -249,7 +250,7 @@ void addBook(list<Book> &bookList, vector<string> &tagVector) {
     temp.setTitle(title);
     temp.setAuthor(author);
     bookList.push_back(temp);
-};
+}
 
 void deleteBook(list<Book> &bookList) {
     int                   counter = 1,
