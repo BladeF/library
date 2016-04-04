@@ -193,7 +193,7 @@ void showBooks(list<Book> &bookList) {
 }
 
 void clearScreen() {
-    cout << string(50, '\n');
+    cout << string(100, '\n');
 }
 
 void pauseScreen() {
