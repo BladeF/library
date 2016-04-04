@@ -219,7 +219,6 @@ void deleteTag(list<Book> &bookList, vector<string> &tagVector) {
         cout << (i + 1) << "\t" << tagVector[i] << endl;
     }
 
-
     cout << "\n\nEnter number of tag you wish to delete: ";
     cin  >> tagInput;
     tagInput--; // Adjust the displayed number to match the index
@@ -384,15 +383,23 @@ void search(list<Book> &bookList, vector<string> &tagVector) {
 void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
     bool           found = false;
     char           cont;
+    int            tagInput;
     string         tag;
     vector<string> tags;
 
     do {
         clearScreen();
-        showTags(tagVector);
-        cout << "\nEnter tag to search: ";
-        cin  >> tag;
-        cout << endl;
+        cout << "Tags in Library" << endl
+             << "----------------" << endl;
+
+        for(int i = 0; i < tagVector.size(); i++) {
+            cout << (i + 1) << "\t" << tagVector[i] << endl;
+        }
+
+        cout << "\n\nEnter number of tag you wish to search: ";
+        cin  >> tagInput;
+        tagInput--;
+        tag = tagVector[tagInput];
 
         for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
             tags = i->getTags();
