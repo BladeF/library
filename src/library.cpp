@@ -113,7 +113,7 @@ int getCmd() {
         // Puts newline back in stream, as later code depends on it
         cin.putback('\n');
 
-        if(cmd >= 0 && cmd <= 6)
+        if(cmd >= 0 && cmd <= 5)
             break;
 
         cout << "Invalid choice! Please select between 0 and 6" << endl;
