@@ -23,3 +23,9 @@ void Book::setAuthor(string author) {
 void Book::addTag(string tag) {
     tags.push_back(tag);
 }
+
+void Book::deleteTag(int pos) {
+    vector<string>::iterator it = tags.begin();
+    advance(it, pos);
+    tags.erase(it);
+}

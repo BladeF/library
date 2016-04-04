@@ -20,6 +20,7 @@ class Book {
         void                     setTitle  (std::string);
         void                     setAuthor (std::string);
         void                     addTag    (std::string);
+        void                     deleteTag (int);
         void                     clearTags () {tags.clear();}
 
 };

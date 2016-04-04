@@ -9,21 +9,24 @@
 #include "Book.h"
 using namespace std;
 
-//Function Prototypes
-void printMenu     ();
-int  getCmd        ();
-void initLoad      (list<Book> &, vector<string> &);
-void showBooks     (list<Book> &);
-void clearScreen   ();
-void pauseScreen   ();
-void showTags      (vector<string> &);
-void addBook       (list<Book> &, vector<string> &);
-void deleteBook    (list<Book> &);
-void exitLib       (list<Book> &, vector<string> &);
-void search        (list<Book> &, vector<string> &);
-void searchByTag   (list<Book> &, vector<string> &);
-void searchByTitle (list<Book> &, vector<string> &);
+// Function Prototypes
+void printMenu      ();
+int  getCmd         ();
+void initLoad       (list<Book> &, vector<string> &);
+void clearScreen    ();
+void pauseScreen    ();
+void showTags       (vector<string> &);
+void deleteTag      (list<Book> &, vector<string> &);
+void showBooks      (list<Book> &);
+void addBook        (list<Book> &, vector<string> &);
+void deleteBook     (list<Book> &);
+void search         (list<Book> &, vector<string> &);
+void searchByTag    (list<Book> &, vector<string> &);
+void searchByTitle  (list<Book> &);
+void searchByAuthor (list<Book> &);
+void exitLib        (list<Book> &, vector<string> &);
 
+// Main Function
 int main(int argc, char** argv) {
 
     char           cont;
@@ -59,6 +62,10 @@ int main(int argc, char** argv) {
                  clearScreen();
                  showTags(tags);
                  break;
+            case 6:
+                 clearScreen();
+                 deleteTag(library, tags);
+                 break;
             case 0:
                  clearScreen();
                  exitLib(library, tags);
@@ -85,6 +92,8 @@ void printMenu() {
          << setw(16) << left  << "Delete Book"     << endl;
     cout << setw(16) << right << "5"               << "    "
          << setw(16) << left  << "Show All Tags"   << endl;
+    cout << setw(16) << right << "6"               << "    "
+         << setw(16) << left  << "Delete Tag"     << endl;
     cout << setw(16) << right << "0"               << "    "
          << setw(16) << left  << "Quit"            << endl;
 
@@ -104,10 +113,10 @@ int getCmd() {
         // Puts newline back in stream, as later code depends on it
         cin.putback('\n');
 
-        if(cmd >= 0 && cmd <= 5)
+        if(cmd >= 0 && cmd <= 6)
             break;
 
-        cout << "Invalid choice! Please select between 1 and 4" << endl;
+        cout << "Invalid choice! Please select between 0 and 6" << endl;
     }
 
     return cmd;
@@ -172,6 +181,70 @@ void initLoad(list<Book> &bookList, vector<string> &tagVector) {
 
 }
 
+void clearScreen() {
+    cout << string(100, '\n');
+}
+
+void pauseScreen() {
+    cout << "Press Enter to continue...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+}
+
+void showTags(vector<string> &tagVector) {
+    cout << "Tags in Library" << endl
+         << "----------------" << endl;
+
+    for(int i = 0; i < tagVector.size(); i++) {
+        cout << tagVector[i] << endl;
+    }
+
+    cout << endl << endl; // Helps make formatting look better
+}
+
+void deleteTag(list<Book> &bookList, vector<string> &tagVector) {
+    char                     cont;
+    int                      index       = 0,
+                             tagInput;
+    string                   delTag;
+    vector<string>           tags;
+    vector<string>::iterator it          = tagVector.begin();
+
+    cout << "Tags in Library" << endl
+         << "----------------" << endl;
+
+    for(int i = 0; i < tagVector.size(); i++) {
+        cout << (i + 1) << "\t" << tagVector[i] << endl;
+    }
+
+
+    cout << "\n\nEnter number of tag you wish to delete: ";
+    cin  >> tagInput;
+    tagInput--; // Adjust the displayed number to match the index
+    cout << "Delete " << tagVector[tagInput] << "? (Y or N): ";
+    cin  >> cont;
+
+    if(tolower(cont) == 'n') {
+        cout << "Returning to main menu" << endl;
+        return;
+    }
+
+    delTag = tagVector[tagInput];
+    advance(it, tagInput);
+    tagVector.erase(it);
+
+    for(list<Book>::iterator bookIt = bookList.begin(); bookIt != bookList.end(); bookIt++) {
+        tags       = bookIt->getTags();
+
+        for(int i = 0; i < tags.size(); i++) {
+            if(tags[i].compare(delTag) == 0) {
+                bookIt->deleteTag(i);
+            }
+        }// end tags for
+    }// end book for
+
+}
+
 void showBooks(list<Book> &bookList) {
     vector<string> tags;
 
@@ -190,25 +263,8 @@ void showBooks(list<Book> &bookList) {
 
         cout << "-----" << endl;
     }
-}
 
-void clearScreen() {
-    cout << string(100, '\n');
-}
-
-void pauseScreen() {
-    cout << "Press Enter to continue...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
-}
-
-void showTags(vector<string> &tagVector) {
-    cout << "Tags in Library" << endl
-         << "----------------" << endl;
-
-    for(int i = 0; i < tagVector.size(); i++) {
-        cout << tagVector[i] << endl;
-    }
+    cout << endl << endl; // Helps formatting look better
 }
 
 void addBook(list<Book> &bookList, vector<string> &tagVector) {
@@ -294,31 +350,6 @@ void deleteBook(list<Book> &bookList) {
         cout << "Returning to main menu" << endl;
 }
 
-void exitLib(list<Book> &bookList, vector<string> &tagVector) {
-    ofstream       bookData("data/bookOutput.txt"),
-                   tagData ("data/tagOutput.txt");
-    vector<string> tags;
-
-    for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
-        bookData << i->getTitle()  << endl
-                 << i->getAuthor() << endl;
-
-        tags = i->getTags();
-        for(int v = 0; v != tags.size(); v++) {
-            bookData << tags[v] << endl;
-        }
-
-        bookData << ":" << endl;
-    }
-
-    for(int k = 0; k < tagVector.size(); k++) {
-        if((k + 1) != tagVector.size())
-            tagData << tagVector[k] << endl;
-        else
-            tagData << tagVector[k];
-    }
-}
-
 void search(list<Book> &bookList, vector<string> &tagVector) {
     bool   titleFound = false,
            tagFound   = false;
@@ -341,7 +372,7 @@ void search(list<Book> &bookList, vector<string> &tagVector) {
 
     if(titleFound) {
         clearScreen();
-        searchByTitle(bookList, tagVector);
+        searchByTitle(bookList);
     }
     else if(tagFound) {
         clearScreen();
@@ -351,7 +382,45 @@ void search(list<Book> &bookList, vector<string> &tagVector) {
         cout << "Invalid choice. Returning to main menu." << endl;
 }
 
-void searchByTitle(list<Book> &bookList, vector<string> &tagVector) {
+void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
+    bool           found = false;
+    char           cont;
+    string         tag;
+    vector<string> tags;
+
+    do {
+        clearScreen();
+        showTags(tagVector);
+        cout << "\nEnter tag to search: ";
+        cin  >> tag;
+        cout << endl;
+
+        for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
+            tags = i->getTags();
+
+            for(int k = 0; k < tags.size(); k++) {
+                if(tag.compare(tags[k]) == 0) {
+                    cout << "Title:  " << i->getTitle()  << endl
+                         << "Author: " << i->getAuthor() << endl
+                         << "-----"    << endl;
+
+                    found = true;
+                }
+            }
+
+            tags.clear();
+        }// end for
+
+        if(!found)
+            cout << "\nNo results found...\n";
+
+        cout << "\nSearch again? (Y or N): ";
+        cin  >> cont;
+        cont = tolower(cont);
+    } while(cont == 'y');
+}
+
+void searchByTitle(list<Book> &bookList) {
     bool   found = false;
     char   cont;
     size_t pos;
@@ -394,40 +463,27 @@ void searchByTitle(list<Book> &bookList, vector<string> &tagVector) {
 
 }
 
-void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
-    bool           found = false;
-    char           cont;
-    string         tag;
+void exitLib(list<Book> &bookList, vector<string> &tagVector) {
+    ofstream       bookData("data/bookOutput.txt"),
+                   tagData ("data/tagOutput.txt");
     vector<string> tags;
 
-    do {
-        clearScreen();
-        showTags(tagVector);
-        cout << "\nEnter tag to search: ";
-        cin  >> tag;
-        cout << endl;
+    for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
+        bookData << i->getTitle()  << endl
+                 << i->getAuthor() << endl;
 
-        for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
-            tags = i->getTags();
+        tags = i->getTags();
+        for(int v = 0; v != tags.size(); v++) {
+            bookData << tags[v] << endl;
+        }
 
-            for(int k = 0; k < tags.size(); k++) {
-                if(tag.compare(tags[k]) == 0) {
-                    cout << "Title:  " << i->getTitle()  << endl
-                         << "Author: " << i->getAuthor() << endl
-                         << "-----"    << endl;
+        bookData << ":" << endl;
+    }
 
-                    found = true;
-                }
-            }
-
-            tags.clear();
-        }// end for
-
-        if(!found)
-            cout << "\nNo results found...\n";
-
-        cout << "\nSearch again? (Y or N): ";
-        cin  >> cont;
-        cont = tolower(cont);
-    } while(cont == 'y');
+    for(int k = 0; k < tagVector.size(); k++) {
+        if((k + 1) != tagVector.size())
+            tagData << tagVector[k] << endl;
+        else
+            tagData << tagVector[k];
+    }
 }
