@@ -95,7 +95,14 @@ int getCmd() {
 
     while(true) {
         cout << "\n\nPlease select an option number: ";
-        cin  >> cmd;
+        // Gets the first character from the stream
+        cmd = cin.get();
+        // Converts the ASCII value to the true cmd number
+        cmd -= '0';
+        // Ignores any extra characters entered between cmd and newline
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        // Puts newline back in stream, as later code depends on it
+        cin.putback('\n');
 
         if(cmd >= 0 && cmd <= 5)
             break;
@@ -186,7 +193,7 @@ void showBooks(list<Book> &bookList) {
 }
 
 void clearScreen() {
-    system("clear");
+    cout << string(50, '\n');
 }
 
 void pauseScreen() {
