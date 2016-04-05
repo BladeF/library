@@ -370,7 +370,7 @@ void search(list<Book> &bookList, vector<string> &tagVector) {
          << "\t2\ttitle"                              << endl
          << "\t3\tauthor"                             << endl
          << "\n\t0\tReturn to menu"                   << endl
-         << endl << endl
+         << endl
          << "Enter number of choice: ";
     cin  >> input;
 
