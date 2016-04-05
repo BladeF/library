@@ -398,6 +398,11 @@ void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
     string         tag;
     vector<string> tags;
 
+    if(tagVector.size() == 0) {
+        cout << "No tags. Returning to main menu." << endl;
+        return;
+    }
+
     do {
         clearScreen();
         cout << "Tags in Library" << endl
@@ -442,6 +447,11 @@ void searchByTitle(list<Book> &bookList) {
     char   cont;
     string searchInput, bookTitle;
 
+    if(bookList.size() == 0) {
+        cout << "No books in library. Returning to main menu." << endl;
+        return;
+    }
+
     do {
         clearScreen();
         cout << "Enter title to search: ";
@@ -482,6 +492,11 @@ void searchByAuthor(list<Book> &bookList) {
     bool   found = false;
     char   cont;
     string searchInput, bookAuthor;
+
+    if(bookList.size() == 0) {
+        cout << "No books in library. Returning to main menu." << endl;
+        return;
+    }
 
     do {
         clearScreen();
