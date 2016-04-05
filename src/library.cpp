@@ -369,6 +369,7 @@ void search(list<Book> &bookList, vector<string> &tagVector) {
          << "\t1\ttag"                                << endl
          << "\t2\ttitle"                              << endl
          << "\t3\tauthor"                             << endl
+         << "\n\t0\tReturn to menu"                   << endl
          << endl << endl
          << "Enter number of choice: ";
     cin  >> input;
@@ -386,6 +387,8 @@ void search(list<Book> &bookList, vector<string> &tagVector) {
              clearScreen();
              searchByAuthor(bookList);
              break;
+        case 0:
+             return;
         default:
              cout << "Invalid choice. Returning to main menu." << endl;
     }
@@ -412,8 +415,14 @@ void searchByTag(list<Book> &bookList, vector<string> &tagVector) {
             cout << (i + 1) << "\t" << tagVector[i] << endl;
         }
 
+        cout << "0\tReturn to menu" << endl;
         cout << "\n\nEnter number of tag you wish to search: ";
         cin  >> tagInput;
+
+        if(tagInput == 0) {
+            return;
+        }
+
         tagInput--;
         tag = tagVector[tagInput];
 
@@ -454,10 +463,14 @@ void searchByTitle(list<Book> &bookList) {
 
     do {
         clearScreen();
-        cout << "Enter title to search: ";
+        cout << "Enter title to search or 0 (zero) to return to menu: ";
         cin  >> searchInput;
-        cout << endl;
 
+        if(searchInput.compare("0") == 0 || searchInput.compare("zero") == 0) {
+            return;
+        }
+
+        cout << endl;
         for(int k = 0; k < searchInput.length(); k++)
             searchInput[k] = tolower(searchInput[k]);
 
@@ -501,8 +514,14 @@ void searchByAuthor(list<Book> &bookList) {
     do {
         clearScreen();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Enter author name: ";
+        cout << "Enter author name or 0 (zero) to return to menu: ";
         getline(cin, searchInput);
+        cin.putback('\n');
+
+        if(searchInput.compare("0") == 0 || searchInput.compare("zero") == 0) {
+            return;
+        }
+
         for(int c = 0; c < searchInput.length(); c++)
             searchInput[c] = tolower(searchInput[c]);
 
