@@ -212,6 +212,11 @@ void deleteTag(list<Book> &bookList, vector<string> &tagVector) {
     vector<string>           tags;
     vector<string>::iterator it          = tagVector.begin();
 
+    if(tagVector.size() == 0) {
+        cout << "No tags. Returning to main menu." << endl;
+        return;
+    }
+
     cout << "Tags in Library" << endl
          << "----------------" << endl;
 
@@ -321,6 +326,11 @@ void deleteBook(list<Book> &bookList) {
                           input;
     char                  confirm;
     list<Book>::iterator del     = bookList.begin();
+
+    if(bookList.size() == 0) {
+        cout << "No books in library. Returning to main menu." << endl;
+        return;
+    }
 
     for(list<Book>::iterator i = bookList.begin(); i != bookList.end(); i++) {
         cout << counter      << endl
