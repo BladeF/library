@@ -117,6 +117,7 @@ int getCmd() {
             break;
 
         cout << "Invalid choice! Please select between 0 and 6" << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 
     return cmd;
