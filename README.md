@@ -11,4 +11,10 @@ information like genre tags. The main file uses an STL `List` of
 `Books` as the _library_.
 
 ## Interface
-This program is meant to be run in a terminal interface.
+This program is meant to be run in a bash terminal interface. It is
+not supported to run on any other interface.
+
+## Install/Run
+Simply download the code to the desired destination and run the `init.sh`
+script. Once the initialization is finished, run the `run.sh` script to
+use the library.
