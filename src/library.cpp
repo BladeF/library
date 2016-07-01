@@ -279,7 +279,7 @@ void addBook(list<Book> &bookList, vector<string> &tagVector) {
     string title, author, tag = "";
     Book   temp;
 
-    cout << "Enter title in quote (\"Title\"): ";
+    cout << "Enter title, quotes optional (\"Title\"): ";
     cin.ignore();
     getline(cin, title);
     cout << "Enter author: ";
